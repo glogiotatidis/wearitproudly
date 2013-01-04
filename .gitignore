@@ -1,2 +1,7 @@
 *.pyc
 *.pyo
+.backup
+*.db
+wsgi/static/
+wsgi/media/shirtshots/
+wsgi/media/cache/

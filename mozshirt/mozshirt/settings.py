@@ -10,17 +10,29 @@ ADMINS = (
 )
 
 MANAGERS = ADMINS
-url = urlparse.urlparse(os.environ.get('OPENSHIFT_MYSQL_DB_URL'))
-
 DATABASES = {}
-DATABASES['default'] = {
-    'ENGINE' : 'django.db.backends.mysql',
-    'NAME': os.environ['OPENSHIFT_APP_NAME'],
-    'USER': url.username,
-    'PASSWORD': url.password,
-    'HOST': url.hostname,
-    'PORT': url.port,
-    }
+
+openshift_url = os.environ.get('OPENSHIFT_MYSQL_DB_URL')
+if openshift_url:
+    url = urlparse.urlparse(openshift_url)
+
+    DATABASES['default'] = {
+        'ENGINE' : 'django.db.backends.mysql',
+        'NAME': os.environ['OPENSHIFT_APP_NAME'],
+        'USER': url.username,
+        'PASSWORD': url.password,
+        'HOST': url.hostname,
+        'PORT': url.port,
+        }
+else:
+    DATABASES['default'] = {
+        'ENGINE' : 'django.db.backends.sqlite3',
+        'NAME': 'foo.db',
+        'USER': '',
+        'PASSWORD': '',
+        'HOST': '',
+        'PORT': '',
+        }
 
 
 # Local time zone for this installation. Choices can be found here:
@@ -46,14 +58,24 @@ USE_L10N = True
 # If you set this to False, Django will not use timezone-aware datetimes.
 USE_TZ = True
 
+MEDIA_URL = '/media/'
+
 # Absolute filesystem path to the directory that will hold user-uploaded files.
 # Example: "/home/media/media.lawrence.com/media/"
-MEDIA_ROOT = ''
+if 'OPENSHIFT_DATA_DIR' in os.environ:
+    MEDIA_ROOT = os.path.join(os.environ.get('OPENSHIFT_DATA_DIR'), 'media')
+else:
+    MEDIA_ROOT = os.path.join('../wsgi/', MEDIA_URL.strip("/"))
+
 
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash.
 # Examples: "http://media.lawrence.com/media/", "http://example.com/media/"
-MEDIA_URL = ''
+
+
+# URL prefix for static files.
+# Example: "http://media.lawrence.com/static/"
+STATIC_URL = '/static/'
 
 # Absolute path to the directory static files should be collected to.
 # Don't put anything in this directory yourself; store your static files
@@ -62,11 +84,8 @@ MEDIA_URL = ''
 if 'OPENSHIFT_REPO_DIR' in os.environ:
     STATIC_ROOT = os.path.join(os.environ.get('OPENSHIFT_REPO_DIR'), 'wsgi', 'static')
 else:
-    STATIC_ROOT = os.path.join(PROJECT_ROOT, STATIC_URL.strip("/"))
+    STATIC_ROOT = os.path.join('../wsgi/', STATIC_URL.strip("/"))
 
-# URL prefix for static files.
-# Example: "http://media.lawrence.com/static/"
-STATIC_URL = '/static/'
 
 # Additional locations of static files
 STATICFILES_DIRS = (
@@ -121,10 +140,13 @@ INSTALLED_APPS = (
     'django.contrib.sites',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    # Uncomment the next line to enable the admin:
-    # 'django.contrib.admin',
-    # Uncomment the next line to enable admin documentation:
-    # 'django.contrib.admindocs',
+    'django.contrib.admin',
+    'django_browserid',
+    'taggit',
+    'imagekit',
+    'south',
+    'mozshirt.chest',
+    'mozshirt.auth'
 )
 
 # A sample logging configuration. The only tangible logging
@@ -155,3 +177,30 @@ LOGGING = {
         },
     }
 }
+
+IMAGE_UPLOAD_PATH = 'shirtshots'
+
+AUTHENTICATION_BACKENDS = (
+    'django_browserid.auth.BrowserIDBackend',
+)
+
+
+TEMPLATE_CONTEXT_PROCESSORS = (
+    'django.core.context_processors.media',
+    'django.contrib.messages.context_processors.messages',
+    'django.contrib.auth.context_processors.auth',
+    'django_browserid.context_processors.browserid_form',
+    'mozshirt.chest.context_processors.shirt_form',
+    'mozshirt.chest.context_processors.current_page',
+)
+
+
+SITE_URL = os.environ.get('SITE_URL', 'http://localhost:8000')
+ALLOWED_BID = ['sealabs.net']
+LOGIN_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = '/'
+LOGIN_REDIRECT_URL_FAILURE = '/auth/failed/'
+MOZILLIANS_API_BASE = 'https://mozillians.org/'
+MOZILLIANS_API_KEY = os.environ.get('MOZILLIANS_API_KEY')
+MOZILLIANS_API_APPNAME = os.environ.get('MOZILLIANS_API_APPNAME')
+

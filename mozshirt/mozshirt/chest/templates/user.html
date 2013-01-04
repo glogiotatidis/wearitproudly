@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% load mozshirt %}
+
+{% block headextra %}
+{% endblock %}
+
+{% block content %}
+<div class="row">
+  <div class="three columns">
+    <div class="row">
+      <img src="{{ pageuser|gravatar:230 }}">
+      <ul class="item-details">
+        <li><span class="radius orange label">Name</span> {{ pageuser.get_full_name|default:'Anonymous Coward' }}</li>
+        <li><span class="radius orange label">Shirts</span> {{ pageuser.owns.count }}</li>
+        <li><span class="radius orange label">Shots</span> {{ pageuser.shots.count }}</li>
+        <li><span class="radius orange label">Rank</span> #{{ rank }} out of {{ count_users }} users</li>
+      </ul>
+    </div>
+  </div>
+  <div class="eight offset-by-one columns">
+    {% if profile_form %}
+    <div class="row right">
+      <a href="#" data-reveal-id="edit-profile-modal" class="small button">Edit</a>
+    </div>
+    {% endif %}
+    <div class="row">
+      <h4>Owns</h4>
+      {% for shirt in pageuser.owns.all %}
+      <a href="{% url view_shirt shirt.id %}">
+        <img src="{{ shirt.thumbnail_small.url}}">
+      </a>
+      {% empty %}
+      None :(
+      {% endfor %}
+    </div>
+
+    <div class="row">
+      <h4>Action shots</h4>
+      {% for shot in pageuser.shots.all %}
+      <a class="gallery" href="{{ shot.image.url }}">
+        <img src="{{ shot.thumbnail_small.url }}">
+      </a>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+
+{% block bottomextra %}
+<div id="edit-profile-modal" class="reveal-modal">
+  <form method="POST" action="{% url edit_user %}">
+    {% csrf_token %}
+    {{ profile_form }}
+    <br/>
+    <input value="Submit" type="submit" class="button small right">
+  </form>
+</div>
+
+<link rel="stylesheet" href="{{ MEDIA_URL }}colorbox/colorbox.css">
+<script src="{{ MEDIA_URL }}javascripts/jquery.colorbox-min.js"></script>
+<script type="text/javascript">
+  $(document).ready(function() {
+  $('a.gallery').colorbox({rel: 'group', transition: 'fade', maxWidth: '85%', maxHeight: '85%'});
+  });
+</script>
+{% endblock %}

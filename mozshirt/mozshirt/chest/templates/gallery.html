@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+{% block content %}
+  <div class="row">
+    <div class="twelve columns">
+      <div id="gallery">
+        <div class="body">
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}
+
+
+{% block bottomextra %}
+<script type="text/javascript">
+
+$(document).ready(function() {
+    PhotoWall.init({
+        el: '#gallery',
+        zoom: true,
+        zoomAction: 'mouseenter',
+        zoomTimeout: 500,
+        zoomDuration: 100,
+        zoomImageBorder: 5,
+        showBox: false,
+        showBoxSocial: false,
+        padding: 2,
+        lineMaxHeight: 200,
+        lineMaxHeightDynamic: false,
+        baseScreenHeight:  600
+    });
+    $.ajax({
+        url: '/get_photos/',
+        dataType: 'json',
+        success: function(data){
+            var photos = {};
+	    data.forEach(function(item) {
+                var id    = item.id;
+                var t1h   = item.thumb_height;
+                var t1w   = item.thumb_width;
+                var t1src = item.thumb_url;
+
+                var t2w   = Math.round(t1w * 1.5);
+                var t2h   = Math.round(t1h * 1.5);
+
+                var t2src = '';
+                var bsrc  = '/shirt/' + item.shirt_id + '/';
+                var bw    = item.width;
+                var bh    = item.height;
+
+                photos[id] = {id:id,
+                              img:bsrc,
+                              width:bw,
+                              height:bh,
+                              th: {src:t1src,
+                                   width:t1w,
+                                   height:t1h,
+                                   zoom_src:t2src,
+                                   zoom_factor:1.5}};
+                });
+	    PhotoWall.load(photos);
+        }
+    });
+});
+</script>
+{% endblock %}

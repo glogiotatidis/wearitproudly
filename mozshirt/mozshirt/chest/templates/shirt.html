@@ -1,0 +1,95 @@
+{% extends "base.html" %}
+{% load mozshirt %}
+
+{% block headextra %}
+{% endblock %}
+
+{% block content %}
+<div class="row">
+  <div class="three columns">
+    <div class="row">
+      <img src="{{ shirt.thumbnail.url }}">
+      <ul class="item-details">
+        <li><span class="radius orange label">Introduced</span> {{ shirt.introduced }}</li>
+        <li><span class="radius orange label">Produced by</span> {{ shirt.created_by }}</li>
+        <li><span class="radius orange label">Tags</span>
+          {% for tag in shirt.tags.all %}
+          <a href="{% url tag_gallery tag %}">{{ tag }}</a>
+          {% empty %}
+          None :(
+          {% endfor %}
+        </li>
+        {% if shirt.description %}
+        <li><span class="radius orange label">Description</span> {{ shirt.description }}</li>
+        {% endif %}
+      </ul>
+    </div>
+  </div>
+  <div class="eight offset-by-one columns">
+    {% if user.is_authenticated %}
+    <div class="row right">
+      {% if not owned %}
+      <a href="{% url own_shirt shirt.id %}" class="success button small">I own this </a>
+      {% else %}
+      <a href="{% url own_shirt_not shirt.id %}" class="alert button small">I don't own this </a>
+      {% endif %}
+      <a href="#" data-reveal-id="add-shot-modal" class="success button small">Add action shot</a>
+      {% if can_edit %}
+      <a href="#" data-reveal-id="edit-shirt-modal" class="button small">Edit</a>
+      {% endif %}
+
+    </div>
+    {% endif %}
+    <div class="row">
+      <h4>Owned by</h4>
+      {% for owner in shirt.owned_by.all %}
+      <a href="{% url view_user owner.id %}">
+        <img src="{{ owner|gravatar }}">
+      </a>
+      {% empty %}
+      Nobody :(
+      {% endfor %}
+
+    </div>
+    <div class="row">
+      <h4>Action shots</h4>
+      {% for shot in shirt.shots.all %}
+      <a class="gallery" href="{{ shot.image.url }}">
+        <img src="{{ shot.thumbnail_small.url }}">
+      </a>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+{% endblock %}
+
+
+{% block bottomextra %}
+<div id="edit-shirt-modal" class="reveal-modal">
+  <form method="POST" action="{% url edit_shirt shirt.id %}">
+    {% csrf_token %}
+    {{ shirt_form.as_p }}
+    <br/>
+    <input value="Submit" type="submit" class="button small right">
+  </form>
+</div>
+
+<div id="add-shot-modal" class="reveal-modal">
+  <form enctype="multipart/form-data" method="POST"
+        action="{% url add_shirt_shot shirt.id %}">
+    {% csrf_token %}
+    {{ shot_form.as_p }}
+    <br/>
+    <input value="Submit" type="submit" class="button small right">
+  </form>
+</div>
+
+<link rel="stylesheet" href="{{ MEDIA_URL }}colorbox/colorbox.css">
+<script src="{{ MEDIA_URL }}javascripts/jquery.colorbox-min.js"></script>
+<script type="text/javascript">
+  $(document).ready(function() {
+  $('a.gallery').colorbox({rel: 'group', transition: 'fade', maxWidth: '85%', maxHeight: '85%'});
+  });
+</script>
+{% endblock %}

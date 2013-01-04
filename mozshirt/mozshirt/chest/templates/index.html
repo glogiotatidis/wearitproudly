@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="row">
+  <div class="twelve columns">
+    <!-- {% if user.is_authenticated %} -->
+    <!-- <div class="row right"> -->
+    <!--   <div class="twelve columns"> -->
+    <!--     <a href="#" data-reveal-id="add-shirt-modal" class="button small">Add new</a> -->
+    <!--     </div> -->
+    <!-- </div> -->
+    <!-- {% endif %} -->
+
+    <div class="row">
+      <div class="twelve columns" style="text-align:centered">
+        {% if tag %}<h5>Filter: {{ tag }} <small><a href="/">(view all)</a></small></h5>{% endif %}
+        {% for shirt in shirts %}
+        <a href="{% url view_shirt shirt.id %}">
+          <img src="{{ shirt.thumbnail.url }}">
+        </a>
+        {% endfor %}
+      </div>
+    </div>
+
+  </div>
+</div>
+{% endblock %}

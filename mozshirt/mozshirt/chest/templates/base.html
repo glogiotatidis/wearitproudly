@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+
+<!-- paulirish.com/2008/conditional-stylesheets-vs-css-hacks-answer-neither/ -->
+<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js lt-ie9" lang="en"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+<head>
+  <meta charset="utf-8" />
+
+  <!-- Set the viewport width to device width for mobile -->
+  <meta name="viewport" content="width=device-width" />
+
+  <title>Wear it Proudly</title>
+
+  <!-- Included CSS Files (Uncompressed) -->
+  <!--
+  <link rel="stylesheet" href="stylesheets/foundation.css">
+  -->
+
+  {% block headextra %}
+  {% endblock %}
+
+  <!-- Included CSS Files (Compressed) -->
+  <link rel="stylesheet" href="{{ MEDIA_URL }}stylesheets/animate.css">
+  <link rel="stylesheet" href="{{ MEDIA_URL }}stylesheets/foundation.min.css">
+  <link rel="stylesheet" href="{{ MEDIA_URL }}stylesheets/app.css">
+
+  <script src="{{ MEDIA_URL }}javascripts/modernizr.foundation.js"></script>
+
+  <!-- IE Fix for HTML5 Tags -->
+  <!--[if lt IE 9]>
+    <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+
+</head>
+<body>
+
+  <!-- Wrapper for background -->
+  <div id="wrapper">
+    <!-- container -->
+    <div class="container">
+      <!-- Header -->
+      <div class="row header">
+        <div class="four columns">
+          <h2 id="logo" class="metanormal">
+            <img src="{{ MEDIA_URL }}images/shirt.svg" id="shirt">
+            <a href="/">wear it <span class="metabold">proudly</span></a>
+          </h2>
+        </div>
+        <div class="three columns offset-by-four menu">
+          {% if not user.is_authenticated %}
+          <a class="browserid-login" data-site-name="Wear it Proudly" href="#">
+            <img src="{{ MEDIA_URL }}/images/plain_sign_in_black.png">
+          </a>
+          <form method="POST" action="{% url my_browserid_verify %}">
+            {% csrf_token %}
+            {{ browserid_form.as_p }}
+            <input type="hidden" name="next" value="{{ PATH }}" />
+          </form>
+          {% else %}
+          <div id="command-center" href="#" class="small button dropdown">
+            Command center
+            <span></span>
+            <ul>
+              <li><a href="{% url view_user user.id %}">Profile</a></li>
+              <li><a href="#" data-reveal-id="add-shirt-modal">Add shirt</a></li>
+              {# <li><a href="#">Leaderboard</a></li> #}
+              <li class="divider"></li>
+              <li><a href="{% url logout %}?next={{ PATH }}" class="browserid-logout">Logout</a></li>
+            </ul>
+          </div>
+          {% endif %}
+        </div>
+      </div>
+
+      {% if messages %}
+        <div class="row">
+	  <div class="twelve columns centered">
+            {% for message in messages %}
+            <div class="alert-box {{ message.tags }}">
+              {{ message|safe }}
+              <a href="#" class="close">&times;</a>
+            </div>
+            {% endfor %}
+	  </div>
+        </div>
+      {% endif %}
+
+      <!-- Page Content -->
+      {% block content %}
+
+      {% endblock %}
+    </div>
+    <!-- End of container -->
+  </div>
+  <!-- End of background wrapper -->
+
+  <div class="row footer">
+    <div class="four columns " id="mozilla-footer">
+      <img src="{{ MEDIA_URL }}/images/footer-mozilla.png">
+      <div id="community-website-tagline">community website</div>
+    </div>
+    <div class="four columns offset-by-four fully-aligned small">
+      <p>
+      An initiative to collect the dozens of Mozilla T-shirts
+      produced during the 15 years of Web Freedom. Help us do it
+      by signing using
+      your <a href="https://mozillians.org">mozillians.org</a>
+      account and posting yours!
+      </p>
+      <p>
+      Site created by Giorgos (seadog -- sealabs -- net).
+      Email me with comments, t-shirt designs.
+      </p>
+      <p>
+        <a href="http://thenounproject.com/noun/tshirt/#icon-No8009"
+           target="_blank">Tshirt</a> designed by
+        <a href="http://thenounproject.com/JoshApos"
+           target="_blank">Josh Apostolopoulos</a> from The Noun Project
+      </p>
+    </div>
+  </div>
+  <!-- Included JS Files -->
+  <script src="{{ MEDIA_URL }}javascripts/jquery.js"></script>
+  {{ browserid_form.media }}
+  <script src="{{ MEDIA_URL }}javascripts/foundation.min.js"></script>
+
+  <!-- Initialize JS Plugins -->
+  <script src="{{ MEDIA_URL }}javascripts/app.js"></script>
+
+  <div id="add-shirt-modal" class="reveal-modal">
+    <form enctype="multipart/form-data" method="POST"
+          action="{% url add_shirt %}">
+      {% csrf_token %}
+      {{ shirt_form_new.as_p }}
+      {{ shot_form_new.as_p }}
+      <br/>
+      <input value="Submit" type="submit" class="button small right">
+    </form>
+  </div>
+
+  {% block bottomextra %}
+  {% endblock %}
+</body>
+
+</html>
+

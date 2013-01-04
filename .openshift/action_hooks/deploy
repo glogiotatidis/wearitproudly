@@ -11,5 +11,11 @@ export PYTHON_EGG_CACHE=${OPENSHIFT_HOME_DIR}python-2.6/virtenv/lib/python-2.6/s
 echo "Executing 'python ${OPENSHIFT_REPO_DIR}mozshirt/manage.py syncdb --noinput'"
 python "$OPENSHIFT_REPO_DIR"mozshirt/manage.py syncdb --noinput
 
+echo "Executing 'python ${OPENSHIFT_REPO_DIR}mozshirt/manage.py migrate'"
+python "$OPENSHIFT_REPO_DIR"mozshirt/manage.py migrate
+
 echo "Executing 'python ${OPENSHIFT_REPO_DIR}mozshirt/manage.py collectstatic --noinput -v0'"
 python "$OPENSHIFT_REPO_DIR"mozshirt/manage.py collectstatic --noinput -v0
+
+echo "Copying media files"
+cp -rp "$OPENSHIFT_REPO_DIR"/wsgi/media/* "$OPENSHIFT_DATA_DIR"/media/

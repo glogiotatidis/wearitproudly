@@ -1,0 +1,169 @@
+/* Artfully masterminded by ZURB  */
+/* Setting tabzilla z-index to 30 so it is displayed below modals */
+
+@font-face{
+    font-family:'Open Sans Light';
+    src:url('//www.mozilla.org/media/fonts/OpenSans-Light-webfont.eot');
+    src:url('//www.mozilla.org/media/fonts/OpenSans-Light-webfont.eot?#iefix') format('embedded-opentype'),
+        url('//www.mozilla.org/media/fonts/OpenSans-Light-webfont.woff') format('woff'),
+        url('//www.mozilla.org/media/fonts/OpenSans-Light-webfont.ttf') format('truetype'),
+        url('//www.mozilla.org/media/fonts/OpenSans-Light-webfont.svg#OpenSansLight') format('svg');
+    font-weight:300;
+    font-style:normal
+}
+
+@font-face{
+    font-family:'Open Sans';
+    src:url('//www.mozilla.org/media/fonts/OpenSans-Regular-webfont.eot');
+    src:url('//www.mozilla.org/media/fonts/OpenSans-Regular-webfont.eot?#iefix') format('embedded-opentype'),
+        url('//www.mozilla.org/media/fonts/OpenSans-Regular-webfont.woff') format('woff'),
+        url('//www.mozilla.org/media/fonts/OpenSans-Regular-webfont.ttf') format('truetype'),
+        url('//www.mozilla.org/media/fonts/OpenSans-Regular-webfont.svg#OpenSansRegular') format('svg');
+    font-weight:normal;
+    font-style:normal
+}
+
+
+
+@font-face {
+  font-family: 'MetaBlack';
+  src: url('//www.mozilla.org/img/fonts/MetaWebPro-Black.eot');
+  src: local('☺'), url('//www.mozilla.org/img/fonts/MetaWebPro-Black.woff') format('woff');
+  font-weight: bold;
+}
+@font-face {
+  font-family: 'MetaNormal';
+  src: local('☺'), url('//www.mozilla.org/img/fonts/MetaWebPro-Normal.woff') format('woff');
+  font-weight: bold;
+}
+@font-face {
+  font-family: 'MetaBold';
+  src: url('//www.mozilla.org/img/fonts/MetaWebPro-Bold.eot');
+  src: local('☺'), url('//www.mozilla.org/img/fonts/MetaWebPro-Bold.woff') format('woff');
+  font-weight: bold;
+}
+
+@font-face {
+  font-family: 'ModernPictogramsNormal';
+  src: url('/media/fonts/modernpics-webfont.eot');
+  src: url('/media/fonts/modernpics-webfont.eot?#iefix') format('embedded-opentype'), url('/media/fonts/modernpics-webfont.woff') format('woff'), url('/media/fonts/modernpics-webfont.ttf') format('truetype'), url('/media/fonts/modernpics-webfont.svg#ModernPictogramsNormal') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
+body {
+    background: white;
+    font-family: 'Open Sans Light',sans-serif;
+}
+
+.pictogram {
+  margin-top: 20px !important;
+  text-align: center;
+  font-family: "ModernPictogramsNormal";
+  font-size: 30px;
+  color: #aaa;
+  cursor: default;
+  font-weight: bold;
+}
+
+.metanormal {
+    font-family: 'MetaNormal' !important;
+}
+
+.metabold {
+  font-family: 'MetaBlack' !important;
+}
+
+.row {
+    width: 80%;
+    max-width: 970px;
+}
+
+#wrapper {
+    background: url("//mozilla.org/media/img/sandstone/bg-gradient-sand.png") repeat-x scroll 0 0px, url("//mozilla.org/media/img/sandstone/bg-sand.png") repeat scroll 0 0px, none repeat scroll 0 0 #F5F1E8;
+    padding-bottom: 40px;
+}
+
+
+.menu {
+    margin-top: 40px;
+    text-align: right;
+    margin-right: -15px;
+    line-height: 1.1;
+}
+
+.header {
+    margin-bottom: 20px;
+}
+
+
+.footer {
+    margin-top: 40px;
+    background: white;
+    color: #cecece;
+    width: 80%;
+}
+
+.right {
+     text-align: right;
+}
+
+.fully-aligned {
+    text-align: justify;
+}
+
+#mozilla-footer {
+    margin-bottom: 20px;
+}
+
+#community-website-tagline {
+    clear: both;
+    width: 100%;
+    padding-left: 1px;
+    color: #ccc;
+}
+
+.featured {
+    padding: 14px 25px 0 25px;
+}
+
+.featured ul, li {
+    list-style-type: none;
+}
+
+.orange {
+    background: none repeat scroll 0 0 #F5B836;
+}
+
+h4 {
+    font-size: 16px;
+    font-family: 'Open Sans Light',sans-serif;
+    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.75);
+}
+
+#logo {
+    margin-left: -15px;
+    white-space: nowrap;
+    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.75);
+}
+
+#logo a {
+    color: black;
+}
+
+.item-details  {
+    margin-top: 15px;
+}
+
+#logout {
+    color: black;
+}
+
+#shirt {
+    position: relative;
+    height: 48px;
+    top: 15px;
+    transform:rotate(-15deg);
+    -webkit-transform:rotate(-15deg);
+}
+
