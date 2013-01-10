@@ -40,6 +40,8 @@
       <a class="gallery" href="{{ shot.image.url }}">
         <img src="{{ shot.thumbnail_small.url }}">
       </a>
+      {% empty %}
+      Nah...
       {% endfor %}
     </div>
   </div>
