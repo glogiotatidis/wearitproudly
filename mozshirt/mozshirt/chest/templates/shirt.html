@@ -44,7 +44,7 @@
       <h4>Owned by</h4>
       {% for owner in shirt.owned_by.all %}
       <a href="{% url view_user owner.id %}">
-        <img src="{{ owner|gravatar }}">
+        <img src="{{ owner|gravatar }}" title="{{ owner.get_full_name }}">
       </a>
       {% empty %}
       Nobody :(
