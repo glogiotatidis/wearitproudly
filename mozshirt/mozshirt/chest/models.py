@@ -55,4 +55,4 @@ class ShirtShot(models.Model):
         return self.image.name
 
     class Meta:
-        ordering = ['cover']
+        ordering = ['-cover']

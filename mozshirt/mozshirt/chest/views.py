@@ -1,17 +1,15 @@
 # Create your views here.
-import json
 
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_POST
 from django.db.models import Count
 from django.shortcuts import redirect, render, get_object_or_404
-from django.core.urlresolvers import reverse
-from django.http import HttpResponse
 from django.contrib.auth.models import User
 from django.contrib import messages
 
 from models import Shirt, ShirtShot
 from forms import ShirtForm, ShotForm, ProfileForm
+
 
 def home(request, query=None, tag=None):
     shirt_form = ShirtForm()
